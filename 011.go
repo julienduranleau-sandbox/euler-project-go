@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "strings"
+    "strconv"
 )
 
 func main() {
@@ -36,9 +37,68 @@ func main() {
     numsStr = strings.Trim(numsStr, " ")
 
     nums := strings.Split(numsStr, " ")
+    largestProduct := 0
 
-    
+    for col := 0; col < width; col++ {
+        for row := 0; row < height; row++ {
+            // horizontal
+            if col < width - size - 1 {
+                h1, _ := strconv.Atoi(nums[row * width + col])
+                h2, _ := strconv.Atoi(nums[row * width + col + 1])
+                h3, _ := strconv.Atoi(nums[row * width + col + 2])
+                h4, _ := strconv.Atoi(nums[row * width + col + 3])
+
+                n := h1*h2*h3*h4
+                
+                if n > largestProduct {
+                    largestProduct = n
+                }
+            }
+            
+            // vertical
+            if row < height - size - 1 {
+                v1, _ := strconv.Atoi(nums[row * width + col])
+                v2, _ := strconv.Atoi(nums[(row + 1) * width + col])
+                v3, _ := strconv.Atoi(nums[(row + 2) * width + col])
+                v4, _ := strconv.Atoi(nums[(row + 3) * width + col])
+
+                n := v1*v2*v3*v4
+                
+                if n > largestProduct {
+                    largestProduct = n
+                }
+            }
+            
+            // diagonal topleft -> bottom right
+            if col < width - size - 1 && row < height - size - 1 {
+                d1, _ := strconv.Atoi(nums[row * width + col])
+                d2, _ := strconv.Atoi(nums[(row + 1) * width + col + 1])
+                d3, _ := strconv.Atoi(nums[(row + 2) * width + col + 2])
+                d4, _ := strconv.Atoi(nums[(row + 3) * width + col + 3])
+
+                n := d1*d2*d3*d4
+                
+                if n > largestProduct {
+                    largestProduct = n
+                }
+            }
+
+            // diagonal bottomleft -> topright
+            if col < width - size - 1 && row >= 3 {
+                d1, _ := strconv.Atoi(nums[row * width + col])
+                d2, _ := strconv.Atoi(nums[(row - 1) * width + col + 1])
+                d3, _ := strconv.Atoi(nums[(row - 2) * width + col + 2])
+                d4, _ := strconv.Atoi(nums[(row - 3) * width + col + 3])
+
+                n := d1*d2*d3*d4
+                
+                if n > largestProduct {
+                    largestProduct = n
+                }
+            }
+        }
+    }
 
     fmt.Println("== Euler project - Problem 11 ==")
-    fmt.Println(nums)
+    fmt.Println(largestProduct)
 }
